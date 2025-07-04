@@ -42,6 +42,28 @@ class GCM:
         self.cholesky_ = np.linalg.cholesky(corr_matrix)
         self.is_fitted_ = True
 
+    def fit_from_correlation(self, corr_matrix):
+        """
+        Fit the GCM model from a correlation matrix.
+
+        This method computes the Cholesky decomposition of the given
+        correlation matrix. This decomposition is then used by the `sample`
+        method to generate new data.
+
+        Parameters:
+        corr_matrix : np.ndarray
+            The correlation matrix to fit the model to. The matrix should be
+            a square, symmetric, and positive-semidefinite 2D array.
+        """
+        if not isinstance(corr_matrix, np.ndarray):
+            corr_matrix = np.asarray(corr_matrix)
+        if corr_matrix.ndim != 2 or corr_matrix.shape[0] != corr_matrix.shape[1]:
+            raise ValueError("The correlation matrix must be a square 2D array.")
+
+        # Perform Cholesky decomposition
+        self.cholesky_ = np.linalg.cholesky(corr_matrix)
+        self.is_fitted_ = True
+
     def sample(self, num_samples):
         """
         Generate synthetic samples.

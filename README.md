@@ -13,12 +13,10 @@ This makes it an ideal tool for a variety of tasks, including:
 
 ## Installation
 
-To install the package, clone the repository and install it using pip:
+To install the package though pip, use:
 
 ```bash
-git clone <repository-url>
-cd <repository-directory>
-pip install .
+pip install gcm-syn
 ```
 
 ## Usage

@@ -9,10 +9,18 @@ class GCM:
     as a source dataset. The method is based on the whitepaper "Generative
     Correlation Manifolds: Generating Synthetic Data with Preserved Higher-Order
     Correlations" by Jens E. d'Hondt.
+    
+    Parameters:
+    preserve_stats : bool, default=True
+        Whether to preserve the mean and standard deviation of the original
+        data in the generated samples.
     """
-    def __init__(self):
+    def __init__(self, preserve_stats=True):
         self.cholesky_ = None
         self.is_fitted_ = False
+        self.preserve_stats = preserve_stats
+        self.mean_ = None
+        self.std_ = None
 
     def fit(self, X):
         """
@@ -31,6 +39,11 @@ class GCM:
             X = np.asarray(X)
         if X.ndim == 1:
             X = X.reshape(-1, 1)
+
+        # Store original mean and std if preserve_stats is True
+        if self.preserve_stats:
+            self.mean_ = np.mean(X, axis=0)
+            self.std_ = np.std(X, axis=0, ddof=1)
 
         # Z-normalize the data
         X_z = zscore(X)
@@ -88,5 +101,9 @@ class GCM:
 
         # Transform to create correlated data
         S = Z @ self.cholesky_.T
+
+        # Transform to match original mean and std if preserve_stats is True
+        if self.preserve_stats and self.mean_ is not None and self.std_ is not None:
+            S = S * self.std_ + self.mean_
 
         return S

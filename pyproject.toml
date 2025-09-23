@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gcm-syn"
-version = "0.1.1"
+version = "1.1.0"
 authors = [
     { name = "Jens E. d'Hondt", email = "jensdhondt7@gmail.com" }
 ]

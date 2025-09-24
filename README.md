@@ -177,3 +177,54 @@ pip install -e .
 # Install with development dependencies  
 pip install -e ".[dev]"
 ```
+
+## Development
+
+This project uses Make for common development tasks:
+
+```bash
+# Run tests
+make test
+make test-coverage
+
+# Build package
+make build
+
+# Check current version and get suggestions for next version
+make version
+
+# Publish a new version to PyPI
+make publish VERSION=x.y.z
+```
+
+### Publishing Workflow
+
+The publishing process is automated and includes several safety checks:
+
+1. **Check current version**: Use `make version` to see the current version and suggested next versions
+2. **Publish**: Use `make publish VERSION=x.y.z` where x.y.z is the desired version number
+
+The publish process will:
+
+* Validate the version format (must be semver: x.y.z)
+* Check if the version already exists in pyproject.toml (only updates if different)
+* Verify that the git tag doesn't already exist
+* Clean and build the package
+* Upload to PyPI
+* Commit version changes (if any) and create git tag
+* Push changes and tags to the repository
+
+Example:
+
+```bash
+# Check what versions are available
+make version
+
+# Publish a patch release
+make publish VERSION=1.2.1
+
+# Publish a minor release
+make publish VERSION=1.3.0
+```
+
+The system prevents duplicate publications and ensures version consistency across pyproject.toml and git tags.

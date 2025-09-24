@@ -1,4 +1,4 @@
-.PHONY: test test-verbose test-coverage clean install install-dev help
+.PHONY: test test-verbose test-coverage clean install install-dev build publish version help
 
 # Default target
 help:
@@ -10,6 +10,9 @@ help:
 	@echo "  clean         - Clean up generated files"
 	@echo "  install       - Install package in development mode"
 	@echo "  install-dev   - Install package with development dependencies"
+	@echo "  build         - Build the package for distribution"
+	@echo "  publish       - Build and publish package to PyPI (requires VERSION=x.y.z)"
+	@echo "  version       - Show current version and suggest next versions"
 	@echo "  lint          - Run code linting (if available)"
 
 # Test targets
@@ -47,8 +50,37 @@ clean:
 	rm -rf dist/
 	rm -rf build/
 	rm -rf *.egg-info/
-	find . -type d -name __pycache__ -delete
+	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
+
+# Build and publish targets
+build:
+	@echo "Building package..."
+	rm -rf dist/ build/ *.egg-info/
+	python -m build
+	@echo "Build complete. Files in dist/:"
+	@ls -la dist/
+
+version:
+	@CURRENT=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/'); \
+	MAJOR=$$(echo $$CURRENT | cut -d. -f1); \
+	MINOR=$$(echo $$CURRENT | cut -d. -f2); \
+	PATCH=$$(echo $$CURRENT | cut -d. -f3); \
+	echo "Current version: $$CURRENT"; \
+	echo "Suggested versions:"; \
+	echo "  Patch: $$MAJOR.$$MINOR.$$((PATCH + 1))   (bug fixes)"; \
+	echo "  Minor: $$MAJOR.$$((MINOR + 1)).0   (new features)"; \
+	echo "  Major: $$((MAJOR + 1)).0.0   (breaking changes)"; \
+	echo ""; \
+	echo "To publish: make publish VERSION=x.y.z"
+
+publish:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: VERSION is required. Usage: make publish VERSION=x.y.z"; \
+		exit 1; \
+	fi
+	@echo "Publishing version $(VERSION)..."
+	./publish.sh $(VERSION)
 
 lint:
 	@if command -v flake8 >/dev/null 2>&1; then \

@@ -1,6 +1,6 @@
 # Generative Correlation Manifolds (GCM)
 
-This Python package provides an implementation of the Generative Correlation Manifolds (GCM) method for generating synthetic data. The primary purpose of GCM is to generate data that either mimics the correlation structure of an existing dataset or adheres to a predefined correlation matrix. As described in the accompanying whitepaper, GCM is a computationally efficient method that is mathematically guaranteed to preserve the entire Pearson correlation structure of a z-normalized source dataset.
+This Python package provides an implementation of the Generative Correlation Manifolds (GCM) method for generating synthetic data. The primary purpose of GCM is to generate data that either mimics the correlation structure of an existing dataset or adheres to a predefined correlation matrix. As described in the accompanying whitepaper, GCM is a computationally efficient method that is mathematically guaranteed to preserve the entire Pearson correlation structure of a source dataset.
 
 For a detailed description of the method and its mathematical foundations, please refer to the [whitepaper](whitepaper.pdf).
 

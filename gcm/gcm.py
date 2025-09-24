@@ -50,6 +50,10 @@ class GCM:
 
         # Compute the correlation matrix
         corr_matrix = np.corrcoef(X_z, rowvar=False)
+        
+        # Handle 1D case where corrcoef returns a scalar
+        if corr_matrix.ndim == 0:
+            corr_matrix = np.array([[1.0]])
 
         # Perform Cholesky decomposition
         self.cholesky_ = np.linalg.cholesky(corr_matrix)

@@ -123,3 +123,57 @@ print(f"Std: {np.std(synthetic_data, axis=0, ddof=1)}")
 print("\nCorrelation structure is still preserved:")
 print(np.corrcoef(synthetic_data, rowvar=False))
 ```
+
+## Development and Testing
+
+### Running Tests
+
+The package includes a comprehensive test suite that verifies correlation preservation, statistics handling, and edge cases. 
+
+#### Quick Start
+```bash
+# Run all tests
+make test
+
+# Run tests with verbose output
+make test-verbose
+
+# Run tests with coverage (if pytest-cov is installed)
+make test-coverage
+```
+
+#### Alternative Methods
+```bash
+# Using pytest (recommended)
+python -m pytest tests/ -v
+
+# Using unittest
+python -m unittest discover tests -v
+
+# Run specific test method
+python -m unittest tests.test_gcm.TestGCM.test_correlation_preservation -v
+```
+
+### Project Structure
+```
+gcm-syn/
+├── gcm/                 # Main package
+│   ├── __init__.py
+│   └── gcm.py          # Core GCM implementation
+├── tests/              # Test suite
+│   ├── __init__.py
+│   ├── README.md       # Test documentation
+│   └── test_gcm.py     # Comprehensive unit tests
+├── pyproject.toml      # Project configuration
+├── Makefile           # Development commands
+└── README.md          # This file
+```
+
+### Installing for Development
+```bash
+# Install in development mode
+pip install -e .
+
+# Install with development dependencies  
+pip install -e ".[dev]"
+```
